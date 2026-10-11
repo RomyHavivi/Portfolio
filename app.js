@@ -241,13 +241,8 @@ function displayProject(id) {
   const p = content.projects.find((p) => p.id === id);
   if (!p) return;
   if (p.discipline === "photography") {
-    const visibleProjects = [...main.querySelectorAll("[data-project]")]
-      .map((el) => content.projects.find((p) => p.id === el.dataset.project))
-      .filter((project) => project?.discipline === "photography");
-    gallery = visibleProjects.flatMap((project) =>
-      [project.image, ...(project.photos || [])].map((image) => ({ project, image })),
-    );
-    galleryIndex = gallery.findIndex((item) => item.project.id === id);
+    gallery = [p.image, ...(p.photos || [])].map((image) => ({ project: p, image }));
+    galleryIndex = 0;
     renderGallery();
   } else {
     viewerBody.innerHTML = `<div class="video-frame"></div><div class="viewer-caption"><h2>${e(p.title)}</h2><p>${e(p.description)}</p></div>`;
@@ -287,18 +282,33 @@ function displayProject(id) {
   lockPage();
   viewer.showModal();
 }
-function renderGallery() {
+function renderGallery(transition = false) {
   const focusedStep = document.activeElement?.dataset?.step,
+    previousImage = transition ? viewerBody.querySelector(".lightbox-image img") : null,
     item = gallery[galleryIndex],
     p = item.project;
   viewer.classList.add("viewer-gallery");
-  viewerBody.innerHTML = `<div class="lightbox-image"><img src="${safeImage(item.image)}" alt="${e(p.title)}"></div><div class="viewer-caption"><div><h2 id="viewer-title">${e(p.title)}</h2><p>${e(p.description)}</p></div><div class="gallery-controls"><button data-step="-1" aria-label="התמונה הקודמת">→</button><span dir="ltr" role="status" aria-live="polite" aria-label="תמונה ${galleryIndex + 1} מתוך ${gallery.length}">${galleryIndex + 1} / ${gallery.length}</span><button data-step="1" aria-label="התמונה הבאה">←</button></div></div>`;
+  viewerBody.innerHTML = `<div class="lightbox-image"><img src="${safeImage(item.image)}" alt="${e(p.title)}"><div class="gallery-controls"><button data-step="-1" aria-label="התמונה הקודמת" ${gallery.length < 2 ? "hidden" : ""}>→</button><button data-step="1" aria-label="התמונה הבאה" ${gallery.length < 2 ? "hidden" : ""}>←</button></div></div><div class="viewer-caption"><div><h2 id="viewer-title">${e(p.title)}</h2><p>${e(p.description)}</p></div><span class="gallery-counter" dir="ltr" role="status" aria-live="polite" aria-label="תמונה ${galleryIndex + 1} מתוך ${gallery.length}">${galleryIndex + 1} / ${gallery.length}</span></div>`;
+  const image = viewerBody.querySelector(".lightbox-image img");
+  if (previousImage && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const outgoingImage = previousImage.cloneNode();
+    outgoingImage.classList.add("gallery-image-outgoing");
+    image.classList.add("gallery-image-entering");
+    viewerBody.querySelector(".lightbox-image").append(outgoingImage);
+    requestAnimationFrame(() => {
+      image.classList.add("is-visible");
+      outgoingImage.classList.add("is-fading");
+    });
+    outgoingImage.addEventListener("transitionend", () => outgoingImage.remove(), {
+      once: true,
+    });
+  }
   viewerBody.querySelectorAll("[data-step]").forEach(
     (button) =>
       (button.onclick = () => {
         const step = Number(button.dataset.step);
         galleryIndex = (galleryIndex + step + gallery.length) % gallery.length;
-        renderGallery();
+        renderGallery(true);
         viewerBody.querySelector(`[data-step="${step}"]`).focus();
       }),
   );
@@ -326,7 +336,7 @@ viewer.addEventListener("keydown", (event) => {
     event.preventDefault();
     galleryIndex =
       (galleryIndex + (event.key === "ArrowLeft" ? 1 : -1) + gallery.length) % gallery.length;
-    renderGallery();
+    renderGallery(true);
   }
 });
 main.addEventListener("click", (event) => {
