@@ -12,6 +12,23 @@ export function mediaURL(value = "") {
     return "";
   }
 }
+export function optimizeCloudinaryVideo(value = "") {
+  const safe = mediaURL(value);
+  if (!safe) return "";
+  const url = new URL(safe);
+  if (url.hostname !== "res.cloudinary.com") return safe;
+  const upload = url.pathname.indexOf("/video/upload/");
+  if (upload < 0 || /\/s--[\w-]+--\//.test(url.pathname)) return safe;
+  const prefixEnd = url.pathname.search(/\/v\d+\//);
+  if (prefixEnd < upload) return safe;
+  const transformations = url.pathname.slice(upload + "/video/upload/".length, prefixEnd);
+  if (/(?:^|\/)(?:q_|f_)/.test(transformations)) return safe;
+  url.pathname =
+    url.pathname.slice(0, prefixEnd) +
+    "/q_auto/f_auto" +
+    url.pathname.slice(prefixEnd);
+  return url.href;
+}
 export function parseVideo(value) {
   const safe = mediaURL(value);
   if (!safe) throw new Error("יש להזין כתובת HTTPS תקינה, לא קוד HTML.");
