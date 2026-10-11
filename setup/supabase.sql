@@ -18,7 +18,7 @@ add column if not exists revision bigint not null default 0;
 
 do $$
 declare
-  requested_owner_text constant text := 'REPLACE_WITH_ADMIN_USER_UUID';
+  requested_owner_text constant text := 'd77ab5ea-5f46-4a44-8cf6-e9b5208d5bdf';
   requested_owner uuid;
   field record;
 begin
