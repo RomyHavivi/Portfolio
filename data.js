@@ -21,6 +21,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1400&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
     {
@@ -33,6 +34,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=1400&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
     {
@@ -45,6 +47,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1400&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
     {
@@ -57,6 +60,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1400&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
     {
@@ -69,6 +73,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1531259683007-016a7b628fc3?auto=format&fit=crop&w=1000&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
     {
@@ -81,6 +86,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1000&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
     {
@@ -93,6 +99,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1608889175123-8ee362201f81?auto=format&fit=crop&w=1000&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
     {
@@ -105,6 +112,7 @@ export const initialContent = {
       image:
         "https://images.unsplash.com/photo-1529139513065-c5c37c5e25d5?auto=format&fit=crop&w=1000&q=85",
       video: "",
+      photos: [],
       sample: true,
     },
   ],

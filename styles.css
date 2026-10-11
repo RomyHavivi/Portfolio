@@ -600,7 +600,7 @@ main:focus {
 .about-visual > img {
   height: 520px;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   filter: grayscale(1);
 }
 .about-star {
@@ -1376,12 +1376,22 @@ form > .solid-link {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  justify-content: space-around;
+  min-width: 100vw;
   gap: 42px;
   padding: 0 21px;
   font-size: clamp(30px, 4vw, 60px);
   font-weight: 850;
   line-height: 1.15;
   white-space: nowrap;
+}
+.gallery-count {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: var(--paper);
+  padding: 4px 7px;
+  font-size: 10px;
 }
 .ticker-group > span {
   direction: rtl;

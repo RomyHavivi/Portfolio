@@ -54,6 +54,14 @@ export function validateContent(input, { allowSeed = false } = {}) {
     const p = {};
     for (const [key, max] of Object.entries(projectLimits))
       p[key] = text(project[key], key, max, ["id", "title"].includes(key));
+    p.photos = project.photos === undefined ? [] : project.photos;
+    if (!Array.isArray(p.photos) || p.photos.length > 100)
+      throw new Error("רשימת תמונות הגלריה אינה תקינה.");
+    p.photos = p.photos.map((photo) => {
+      const url = text(photo, "photos", 4000, true);
+      if (!mediaURL(url)) throw new Error("קישור תמונה בגלריה אינו תקין.");
+      return url;
+    });
     if (ids.has(p.id)) throw new Error("מזהי הפרויקטים צריכים להיות ייחודיים.");
     ids.add(p.id);
     if (!["directing", "editing", "photography"].includes(project.discipline))
@@ -72,6 +80,8 @@ export function validateContent(input, { allowSeed = false } = {}) {
     if (p.image && !mediaURL(p.image)) throw new Error("קישור תמונת פרויקט אינו תקין.");
     if (p.discipline === "photography" && !p.image)
       throw new Error("יש להוסיף תמונה לפרויקט צילום.");
+    if (p.discipline !== "photography" && p.photos.length)
+      throw new Error("גלריית תמונות זמינה רק בפרויקט צילום.");
     if (p.video) parseVideo(p.video);
     if (p.discipline === "photography" && p.video)
       throw new Error("פרויקט צילום לא יכול לכלול קישור לווידאו.");

@@ -45,7 +45,7 @@ export function notify(message) {
   notify.timeout = setTimeout(() => el.classList.remove("visible"), 4500);
 }
 function thumbnail(p, index = 0) {
-  return `<button class="project-card ${p.discipline === "photography" ? "photo-card" : ""}" data-project="${e(p.id)}" aria-label="פתיחת ${e(p.title)}"><div class="project-image"><img src="${safeImage(p.image)}" alt="${e(p.title)}" loading="lazy"><span class="project-number" dir="ltr">${String(index + 1).padStart(2, "0")}</span><span class="project-arrow" aria-hidden="true">${p.discipline === "photography" ? "↗" : "▶"}</span>${p.sample ? '<span class="sample-badge">עבודה לדוגמה</span>' : ""}</div><div class="project-caption"><div><h3>${e(p.title)}</h3><p>${e(p.description)}</p></div><span dir="ltr">${e(p.year)}</span></div></button>`;
+  return `<button class="project-card ${p.discipline === "photography" ? "photo-card" : ""}" data-project="${e(p.id)}" aria-label="פתיחת ${e(p.title)}"><div class="project-image"><img src="${safeImage(p.image)}" alt="${e(p.title)}" loading="lazy"><span class="project-number" dir="ltr">${String(index + 1).padStart(2, "0")}</span>${p.discipline === "photography" && p.photos?.length ? `<span class="gallery-count">${p.photos.length + 1} תמונות</span>` : ""}<span class="project-arrow" aria-hidden="true">${p.discipline === "photography" ? "↗" : "▶"}</span>${p.sample ? '<span class="sample-badge">עבודה לדוגמה</span>' : ""}</div><div class="project-caption"><div><h3>${e(p.title)}</h3><p>${e(p.description)}</p></div><span dir="ltr">${e(p.year)}</span></div></button>`;
 }
 function disciplineLinks() {
   return `<div class="disciplines">${Object.entries(labels)
@@ -57,7 +57,7 @@ function disciplineLinks() {
 }
 function renderHome() {
   const hero = optimizeCloudinaryVideo(content.heroVideo);
-  main.innerHTML = `<section class="hero" aria-label="פתיחה"><img class="hero-poster" src="${safeImage(content.heroPoster)}" alt=""><video class="hero-video" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "" : "autoplay"} loop muted playsinline preload="metadata" poster="${safeImage(content.heroPoster)}" aria-hidden="true">${hero ? `<source src="${e(hero)}">` : ""}</video><div class="hero-shade"></div><div class="hero-text"><h1>לא רק<br>לראות<span class="orange-dot">.</span><br><em>להרגיש.</em></h1><p>${e(content.intro)}</p><a class="hero-cta" href="#projects">אל העבודות <span aria-hidden="true">↙</span></a></div><div class="hero-bottom"><button id="hero-toggle" aria-label="השהיית סרטון הפתיחה">Ⅱ</button></div></section>${disciplineLinks()}<section class="home-work section-pad"><div class="section-heading"><div><h2>שלושה עולמות.<br>אותה סקרנות<span class="orange-dot">.</span></h2></div><a class="text-link" href="#projects">כל העבודות ↖</a></div><div class="selected-grid">${Object.keys(
+  main.innerHTML = `<section class="hero" aria-label="פתיחה"><img class="hero-poster" src="${safeImage(content.heroPoster)}" alt=""><video class="hero-video" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "" : "autoplay"} loop muted playsinline preload="auto" poster="${safeImage(content.heroPoster)}" aria-hidden="true">${hero ? `<source src="${e(hero)}">` : ""}</video><div class="hero-shade"></div><div class="hero-text"><h1>לא רק<br>לראות<span class="orange-dot">.</span><br><em>להרגיש.</em></h1><p>${e(content.intro)}</p><a class="hero-cta" href="#projects">אל העבודות <span aria-hidden="true">↙</span></a></div><div class="hero-bottom"><button id="hero-toggle" aria-label="השהיית סרטון הפתיחה">Ⅱ</button></div></section>${disciplineLinks()}<section class="home-work section-pad"><div class="section-heading"><div><h2>שלושה עולמות.<br>אותה סקרנות<span class="orange-dot">.</span></h2></div><a class="text-link" href="#projects">כל העבודות ↖</a></div><div class="selected-grid">${Object.keys(
     labels,
   )
     .map((key) => {
@@ -185,7 +185,7 @@ function updateProjectView(discipline = "directing", filter = "all") {
       status.setAttribute("role", "status");
       filters.after(status);
     }
-    status.textContent = `${projects.length} תמונות בקטגוריה ${{ all: "הכול", cosplay: "קוספליי", fashion: "אופנה" }[filter]}`;
+    status.textContent = `${projects.length} עבודות בקטגוריה ${{ all: "הכול", cosplay: "קוספליי", fashion: "אופנה" }[filter]}`;
   } else status?.remove();
   const tail = document.documentElement.scrollHeight - top - grid.getBoundingClientRect().height;
   grid.style.minHeight = `${Math.max(0, scroll + window.innerHeight - top - tail)}px`;
@@ -241,10 +241,13 @@ function displayProject(id) {
   const p = content.projects.find((p) => p.id === id);
   if (!p) return;
   if (p.discipline === "photography") {
-    gallery = [...main.querySelectorAll("[data-project]")]
+    const visibleProjects = [...main.querySelectorAll("[data-project]")]
       .map((el) => content.projects.find((p) => p.id === el.dataset.project))
-      .filter((p) => p?.discipline === "photography");
-    galleryIndex = gallery.findIndex((x) => x.id === id);
+      .filter((project) => project?.discipline === "photography");
+    gallery = visibleProjects.flatMap((project) =>
+      [project.image, ...(project.photos || [])].map((image) => ({ project, image })),
+    );
+    galleryIndex = gallery.findIndex((item) => item.project.id === id);
     renderGallery();
   } else {
     viewerBody.innerHTML = `<div class="video-frame"></div><div class="viewer-caption"><h2>${e(p.title)}</h2><p>${e(p.description)}</p></div>`;
@@ -255,11 +258,13 @@ function displayProject(id) {
       try {
         const media = parseVideo(p.video),
           el = document.createElement(media.type === "video" ? "video" : "iframe");
-        el.src = media.src;
         if (media.type === "video") {
+          el.src = optimizeCloudinaryVideo(media.src);
           el.controls = true;
           el.playsInline = true;
+          el.preload = "auto";
         } else {
+          el.src = media.src;
           el.title = p.title;
           el.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
           el.allowFullscreen = true;
@@ -284,9 +289,10 @@ function displayProject(id) {
 }
 function renderGallery() {
   const focusedStep = document.activeElement?.dataset?.step,
-    p = gallery[galleryIndex];
+    item = gallery[galleryIndex],
+    p = item.project;
   viewer.classList.add("viewer-gallery");
-  viewerBody.innerHTML = `<div class="lightbox-image"><img src="${safeImage(p.image)}" alt="${e(p.title)}"></div><div class="viewer-caption"><div><h2 id="viewer-title">${e(p.title)}</h2><p>${e(p.description)}</p></div><div class="gallery-controls"><button data-step="-1" aria-label="התמונה הקודמת">→</button><span dir="ltr" role="status" aria-live="polite" aria-label="תמונה ${galleryIndex + 1} מתוך ${gallery.length}">${galleryIndex + 1} / ${gallery.length}</span><button data-step="1" aria-label="התמונה הבאה">←</button></div></div>`;
+  viewerBody.innerHTML = `<div class="lightbox-image"><img src="${safeImage(item.image)}" alt="${e(p.title)}"></div><div class="viewer-caption"><div><h2 id="viewer-title">${e(p.title)}</h2><p>${e(p.description)}</p></div><div class="gallery-controls"><button data-step="-1" aria-label="התמונה הקודמת">→</button><span dir="ltr" role="status" aria-live="polite" aria-label="תמונה ${galleryIndex + 1} מתוך ${gallery.length}">${galleryIndex + 1} / ${gallery.length}</span><button data-step="1" aria-label="התמונה הבאה">←</button></div></div>`;
   viewerBody.querySelectorAll("[data-step]").forEach(
     (button) =>
       (button.onclick = () => {

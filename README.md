@@ -9,6 +9,8 @@ Project disciplines and photo categories now update the gallery in place, retain
 ## What is ready, and what still needs connecting
 
 - The design and public pages work immediately using **fictional placeholder projects**, Unsplash sample images and a sample Sintel trailer.
+- Photography entries can contain a cover image plus up to 100 additional images. Add gallery-image URLs one per line or select multiple files in the dashboard; if no cover is set, the first selected image becomes the cover. Visitors browse the set in the existing lightbox.
+- The hero video is preloaded for immediate playback and Cloudinary-hosted videos receive automatic quality/format optimization. Project videos load when opened rather than downloading every video on every visit.
 - Persistent editing, uploads and password login use **Supabase**. They require the one-time setup below. The Tasklet preview provides a clearly marked, temporary editing demo, not permanent storage.
 - Contact submissions use **Netlify Forms**. Enable form detection and notification delivery in your Netlify dashboard. There is no outgoing email service built into the website.
 - No account has been created and nothing has been published on your behalf.
@@ -44,6 +46,7 @@ Use repository-based deployment, rather than Netlify Drop: the small configurati
 2. In **Authentication → Users**, create your admin user with an email and a strong password. Create it as a confirmed user; do not add a public signup form. Disable new-user signups in Authentication settings. No credentials go into source files.
 3. Copy that user's UUID. In `setup/supabase.sql`, replace `REPLACE_WITH_ADMIN_USER_UUID` with it.
 4. Run the SQL in the Supabase SQL editor. It creates one portfolio record and the public `portfolio-media` bucket. It only permits that record's owner to change content or upload files. An unrelated authenticated account cannot edit this portfolio.
+   If Supabase was already configured, rerun the updated SQL after inserting the same admin UUID; this updates server-side validation for photography galleries without replacing saved content.
 5. In Netlify's environment-variable settings, add:
    - `SUPABASE_URL`: your project URL, e.g. `https://your-project.supabase.co`.
    - `SUPABASE_ANON_KEY`: your **public anon / publishable** key. Never use the service-role key or a secret key. Public keys are intentionally sent to browsers; security is provided by database policies.
@@ -67,7 +70,7 @@ The footer's **ניהול האתר** link opens the studio. Its URL is not a sec
 - Use an image HTTPS URL or upload JPG, PNG, WEBP, AVIF or GIF. Supported video uploads are MP4 / WEBM. Maximum file size: 50 MB. Storage limits and pricing depend on your Supabase plan.
 - Click Save after uploading a file; uploading alone does not attach it to your content.
 - For YouTube or Vimeo projects, paste the regular video link. For other platforms, use the actual HTTPS **embed URL**, not an iframe HTML snippet. The platform must permit framing. DRM, private videos, platform restrictions and missing permissions cannot be overridden.
-- For the hero, use a direct HTTPS `.mp4` / `.webm` link. It plays muted, loops, and has a pause control. A poster remains visible when autoplay or loading is blocked. Reduced-motion preferences turn off autoplay.
+- For the hero, use a direct HTTPS `.mp4` / `.webm` link. Cloudinary videos with a standard versioned delivery URL automatically receive `q_auto/f_auto` optimizations; for other sources, upload a web-sized, compressed video (ideally 1080p or smaller). It plays muted, loops, and has a pause control. A poster remains visible when autoplay or loading is blocked. Reduced-motion preferences turn off autoplay.
 - Photography opens an image viewer with next/previous controls and keyboard arrows; Escape closes it.
 - Login sessions are stored for the current browser tab and refreshed while active. Sign out when using a shared device.
 
@@ -75,7 +78,7 @@ All uploaded files in the media bucket are public. Never upload confidential mat
 
 ## 4. Enable contact messages
 
-The static HTML includes a `portfolio-contact` form for Netlify to detect. In your Netlify project, enable Forms / form detection and deploy. Confirm it appears in **Forms**, submit a real test message on the deployed site, then configure **form submission notifications** to your chosen email address. In the Tasklet preview, the form explicitly does not send.
+The static HTML includes a `portfolio-contact` form for Netlify to detect. In your Netlify project, enable Forms / form detection, then trigger a fresh deploy so Netlify scans the form declaration. Confirm `portfolio-contact` appears in **Forms**, submit a real test message through the deployed site's contact page, and confirm it appears as a submission before configuring **form submission notifications** to your chosen email address. Enabling detection alone does not send a message, and the Tasklet preview explicitly does not send.
 
 If Forms is not enabled, you should not consider the contact page operational. Netlify pricing, quotas and spam filtering apply. The form uses a honeypot and HTML validation; it does not claim to offer legal-compliance or advanced spam guarantees.
 
