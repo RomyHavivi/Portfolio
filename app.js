@@ -1,5 +1,5 @@
 import { labels, initialContent } from "./data.js";
-import { escapeHTML as e, mediaURL, parseVideo } from "./media.js";
+import { escapeHTML as e, mediaURL, optimizeCloudinaryVideo, parseVideo } from "./media.js";
 import { initializeStore, isPreview, isLocalHost } from "./store.js";
 import { renderAdmin, hasUnsavedChanges, adminBusy, clearAdminDraft } from "./admin.js";
 import { enhanceMotion, finishMotionReveals } from "./motion.js";
@@ -56,7 +56,7 @@ function disciplineLinks() {
     .join("")}</div>`;
 }
 function renderHome() {
-  const hero = mediaURL(content.heroVideo);
+  const hero = optimizeCloudinaryVideo(content.heroVideo);
   main.innerHTML = `<section class="hero" aria-label="פתיחה"><img class="hero-poster" src="${safeImage(content.heroPoster)}" alt=""><video class="hero-video" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "" : "autoplay"} loop muted playsinline preload="metadata" poster="${safeImage(content.heroPoster)}" aria-hidden="true">${hero ? `<source src="${e(hero)}">` : ""}</video><div class="hero-shade"></div><div class="hero-text"><h1>לא רק<br>לראות<span class="orange-dot">.</span><br><em>להרגיש.</em></h1><p>${e(content.intro)}</p><a class="hero-cta" href="#projects">אל העבודות <span aria-hidden="true">↙</span></a></div><div class="hero-bottom"><button id="hero-toggle" aria-label="השהיית סרטון הפתיחה">Ⅱ</button></div></section>${disciplineLinks()}<section class="home-work section-pad"><div class="section-heading"><div><h2>שלושה עולמות.<br>אותה סקרנות<span class="orange-dot">.</span></h2></div><a class="text-link" href="#projects">כל העבודות ↖</a></div><div class="selected-grid">${Object.keys(
     labels,
   )
