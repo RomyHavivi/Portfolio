@@ -264,7 +264,8 @@ function displayProject(id) {
           el.allow = "autoplay; fullscreen; picture-in-picture; encrypted-media";
           el.allowFullscreen = true;
           el.referrerPolicy = "strict-origin-when-cross-origin";
-          el.setAttribute("sandbox", "allow-scripts allow-same-origin allow-presentation");
+          if (!["iframely.net", "cdn.iframe.ly"].includes(new URL(media.src).hostname))
+            el.setAttribute("sandbox", "allow-scripts allow-same-origin allow-presentation");
         }
         frame.append(el);
         const link = document.createElement("a");
