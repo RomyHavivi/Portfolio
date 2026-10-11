@@ -92,7 +92,7 @@ export function enhanceMotion(root) {
       .querySelector(".disciplines")
       .insertAdjacentHTML(
         "afterend",
-        `<div class="creative-ticker" aria-hidden="true"><div class="ticker-track">${Array.from({ length: 2 }, () => '<span class="ticker-group"><span>בימוי</span><i>↗</i><span class="ticker-outline">עריכה</span><i>↗</i><span>צילום</span><i>↗</i><span class="ticker-outline">בלי גבולות</span><i>↗</i></span>').join("")}</div></div>`,
+        `<div class="creative-ticker" aria-hidden="true"><div class="ticker-track">${Array.from({ length: 2 }, () => '<span class="ticker-group"><span>בימוי</span><i>↗</i><span class="ticker-outline">עריכה</span><i>↗</i><span>צילום</span><i>↗</i>').join("")}</div></div>`,
       );
   }
   if (!enabled) return;
