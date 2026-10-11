@@ -36,10 +36,18 @@
       <div id="viewer-body"></div>
     </dialog>
     <div id="toast" role="status" aria-live="polite"></div>
-    <form name="portfolio-contact" netlify netlify-honeypot="website" hidden>
-      <input name="form-name" value="portfolio-contact" /><input name="name" /><input
-        name="email"
-      /><textarea name="message"></textarea><input name="website" />
+    <form
+      name="portfolio-contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="website"
+      hidden
+    >
+      <input type="hidden" name="form-name" value="portfolio-contact" />
+      <input name="name" />
+      <input name="email" type="email" />
+      <textarea name="message"></textarea>
+      <input name="website" />
     </form>
     <script type="module" src="./app.js"></script>
   </body>
