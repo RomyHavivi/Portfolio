@@ -18,7 +18,7 @@ add column if not exists revision bigint not null default 0;
 
 do $$
 declare
-  requested_owner_text constant text := 'd77ab5ea-5f46-4a44-8cf6-e9b5208d5bdf';
+  requested_owner_text constant text := 'REPLACE_WITH_ADMIN_USER_UUID';
   requested_owner uuid;
   field record;
 begin
@@ -131,7 +131,7 @@ end; $$;
 create or replace function public.portfolio_content_valid (document jsonb) returns boolean language plpgsql immutable
 set
   search_path = pg_catalog as $$
-declare field record; project jsonb; discipline text;
+declare field record; project jsonb; photo jsonb; discipline text;
 begin
   if jsonb_typeof(document) is distinct from 'object' then return false; end if;
   -- {} remains the intentional placeholder seed, including for dashboard reset.
@@ -169,6 +169,15 @@ begin
     if jsonb_typeof(project->'sample') is distinct from 'boolean' then return false; end if;
     if project->>'image'<>'' and not public.portfolio_media_url_valid(project->>'image') then return false; end if;
     if discipline='photography' and project->>'image'='' then return false; end if;
+    if project ? 'photos' then
+      if jsonb_typeof(project->'photos') is distinct from 'array'
+        or jsonb_array_length(project->'photos')>100 then return false; end if;
+      for photo in select value from jsonb_array_elements(project->'photos') loop
+        if not public.portfolio_text_valid(photo,4000,true)
+          or not public.portfolio_media_url_valid(photo #>> '{}') then return false; end if;
+      end loop;
+      if discipline<>'photography' and jsonb_array_length(project->'photos')>0 then return false; end if;
+    end if;
     if project->>'video'<>'' and (discipline='photography' or not public.portfolio_video_valid(project->>'video')) then return false; end if;
   end loop;
   if exists (
