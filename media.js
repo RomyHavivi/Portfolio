@@ -61,6 +61,13 @@ export function parseVideo(value) {
     const hash = privacy && /^[a-f0-9]{6,}$/.test(privacy) && privacy !== id ? `?h=${privacy}` : "";
     return { type: "iframe", src: `https://player.vimeo.com/video/${id}${hash}` };
   }
+  if (["dailymotion.com", "www.dailymotion.com", "m.dailymotion.com", "dai.ly"].includes(host)) {
+    const id =
+      url.pathname.match(/^\/(?:embed\/)?video\/([\w-]+)\/?$/)?.[1] ||
+      (host === "dai.ly" ? url.pathname.match(/^\/([\w-]+)\/?$/)?.[1] : "");
+    if (!id) throw new Error("קישור Dailymotion אינו תקין.");
+    return { type: "iframe", src: `https://www.dailymotion.com/embed/video/${id}` };
+  }
   if (typeof location !== "undefined" && url.origin === location.origin)
     throw new Error("יש להשתמש בקישור הטמעה מאתר וידאו חיצוני.");
   return { type: "iframe", src: safe };
