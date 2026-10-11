@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="רומי חביבי — בימוי, עריכה וצילום. תיק עבודות יצירתי." />
+    <meta name="theme-color" content="#f1eee7" />
+    <title>רומי חביבי — בימוי / עריכה / צילום</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">דילוג לתוכן</a>
+    <header class="site-header">
+      <a class="wordmark" href="#home" aria-label="רומי חביבי — דף הבית">רומי חביבי</a>
+      <nav aria-label="ניווט ראשי">
+        <a href="#projects">עבודות</a><a href="#about">קצת עליי</a
+        ><a href="#contact" class="nav-contact">בואו נדבר <span aria-hidden="true">↖</span></a>
+      </nav>
+    </header>
+    <main id="main" tabindex="-1">
+      <noscript
+        ><div class="load-state section-pad">
+          <h1>כדי לראות את תיק העבודות</h1>
+          <p>
+            יש להפעיל JavaScript בדפדפן. הוא מאפשר מעבר בין העמודים, סינון תמונות והפעלת סרטונים.
+          </p>
+        </div></noscript
+      >
+    </main>
+    <footer class="site-footer">
+      <a class="wordmark" href="#home">רומי חביבי</a><span>בימוי / עריכה / צילום</span>
+      <div><span id="copyright"></span><a href="#admin">ניהול האתר</a></div>
+    </footer>
+    <dialog id="viewer" class="viewer" aria-labelledby="viewer-title">
+      <button class="viewer-close" aria-label="סגירה">✕</button>
+      <div id="viewer-body"></div>
+    </dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <form name="portfolio-contact" netlify netlify-honeypot="website" hidden>
+      <input name="form-name" value="portfolio-contact" /><input name="name" /><input
+        name="email"
+      /><textarea name="message"></textarea><input name="website" />
+    </form>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
