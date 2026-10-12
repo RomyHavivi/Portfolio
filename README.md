@@ -64,7 +64,7 @@ On a reused Supabase project, inspect **all `storage.objects` policies** before 
 
 The footer's **ניהול האתר** link opens the studio. Its URL is not a security boundary: server-side Supabase policies enforce ownership.
 
-- Edit name, introduction, About text, portrait, hero poster and contact introduction.
+- Edit the name, introduction, About text, images and contact introduction. Open **עריכת שאר הטקסטים באתר** in the settings panel to update the homepage and page headings, links, navigation, form copy, accessibility labels, status messages and other built-in site text. Enter line breaks directly in multiline fields. Text wrapped in braces, such as `{count}` or `{title}`, is replaced with the relevant value and should be left in place when editing those templates.
 - Add / edit / delete / reorder projects.
 - Choose **בימוי**, **עריכה**, or **צילום**; photography projects have **קוספליי** or **אופנה** categories.
 - Use an image HTTPS URL or upload JPG, PNG, WEBP, AVIF or GIF. Still images other than GIF are converted in the browser to WebP at 82% quality and resized to a maximum 2000 px on the longest side before upload. GIFs are kept unchanged to preserve animation. Supported video uploads are MP4 / WEBM. Maximum source file size: 50 MB. Storage limits and pricing depend on your Supabase plan.

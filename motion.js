@@ -1,8 +1,11 @@
+import { initialContent } from "./data.js";
+import { escapeHTML as e } from "./media.js";
 const preference = matchMedia("(prefers-reduced-motion: reduce)");
 let enabled = !preference.matches,
   observer = null,
   hovered = null,
-  raf = 0;
+  raf = 0,
+  copy = initialContent.copy;
 const control = document.createElement("button");
 control.className = "motion-control";
 control.type = "button";
@@ -10,14 +13,14 @@ document.body.append(control);
 function sync() {
   document.documentElement.classList.toggle("motion-paused", !enabled);
   control.textContent = preference.matches
-    ? "תנועה מופחתת"
+    ? copy.motionReduced
     : enabled
-      ? "תנועה: פעילה Ⅱ"
-      : "תנועה: שקטה ▶";
+      ? copy.motionOn
+      : copy.motionOff;
   control.disabled = preference.matches;
   control.setAttribute(
     "aria-label",
-    enabled ? "כיבוי אנימציות דקורטיביות" : "הפעלת אנימציות דקורטיביות",
+    enabled ? copy.motionDisable : copy.motionEnable,
   );
   control.setAttribute("aria-pressed", String(enabled));
   if (!enabled) {
@@ -36,6 +39,10 @@ control.onclick = () => {
   enabled = !enabled;
   sync();
 };
+export function setMotionCopy(nextCopy) {
+  copy = nextCopy;
+  sync();
+}
 preference.addEventListener("change", () => {
   enabled = !preference.matches;
   sync();
@@ -77,22 +84,21 @@ document.addEventListener("pointermove", (event) => {
 document.addEventListener("pointerout", (event) => {
   if (hovered && !hovered.contains(event.relatedTarget)) resetTilt();
 });
-export function enhanceMotion(root) {
+export function enhanceMotion(root, nextCopy = copy) {
+  copy = nextCopy;
   observer?.disconnect();
   resetTilt();
   const hero = root.querySelector(".hero");
   if (hero && !hero.querySelector(".hero-sticker")) {
     hero.insertAdjacentHTML(
       "beforeend",
-      '<div class="hero-sticker" aria-hidden="true"><span dir="ltr">ALWAYS / IN MOTION</span><strong>רעיונות<br>לא עומדים<br>במקום.</strong><i>↗</i></div>',
+      `<div class="hero-sticker" aria-hidden="true"><span dir="ltr">${e(copy.motionStickerCaption)}</span><strong>${copy.motionStickerLines.split("\n").map(e).join("<br>")}</strong><i>↗</i></div>`,
     );
-    hero.querySelector("h1").innerHTML =
-      '<span class="hero-line"><span>לא רק</span></span><span class="hero-line"><span>לראות<span class="orange-dot">.</span></span></span><span class="hero-line"><em>להרגיש.</em></span>';
     root
       .querySelector(".disciplines")
       .insertAdjacentHTML(
         "afterend",
-      `<div class="creative-ticker" aria-hidden="true"><div class="ticker-track">${Array.from({ length: 2 }, () => '<span class="ticker-group"><span>צילום</span><i>↗</i><span class="ticker-outline">עריכה</span><i>↗</i><span>בימוי</span><i>↗</i></span>').join("")}</div></div>`,
+      `<div class="creative-ticker" aria-hidden="true"><div class="ticker-track">${Array.from({ length: 2 }, () => `<span class="ticker-group"><span>${e(copy.disciplinePhotography)}</span><i>↗</i><span class="ticker-outline">${e(copy.disciplineEditing)}</span><i>↗</i><span>${e(copy.disciplineDirecting)}</span><i>↗</i></span>`).join("")}</div></div>`,
       );
   }
   if (!enabled) return;

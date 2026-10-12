@@ -1,11 +1,11 @@
 @import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/heebo@5.2.5/index.min.css");
 :root {
-  --paper: #f1eee7;
-  --ink: #252523;
-  --orange: #ef592d;
-  --blue: #2247e8;
-  --line: #d3cec5;
-  --muted: #68655f;
+  --paper: #e9ecf5;
+  --ink: #501a20;
+  --orange: #e096d5;
+  --blue: #a3c3d9;
+  --line: #ccd6eb;
+  --muted: #6b5368;
   --font: "Heebo Variable", "Arial", sans-serif;
   color-scheme: light;
 }
@@ -64,7 +64,7 @@ a {
   touch-action: manipulation;
 }
 :focus-visible {
-  outline: 3px solid var(--blue);
+  outline: 3px solid var(--ink);
   outline-offset: 5px;
 }
 [hidden] {
@@ -181,7 +181,7 @@ main:focus {
 }
 .hero h1 em {
   font-style: normal;
-  color: var(--paper);
+  color: var(--ink);
   position: relative;
 }
 .hero h1 em:after {
@@ -270,10 +270,10 @@ main:focus {
 }
 .disciplines a:hover {
   background: var(--orange);
-  color: var(--paper);
+  color: var(--ink);
 }
 .disciplines a:hover .discipline-arrow {
-  color: var(--paper);
+  color: var(--ink);
 }
 .section-heading {
   display: flex;
@@ -319,7 +319,7 @@ main:focus {
 .project-image {
   position: relative;
   aspect-ratio: 4/3;
-  background: #cecbc4;
+  background: var(--line);
   overflow: hidden;
 }
 .project-image > img {
@@ -359,7 +359,7 @@ main:focus {
 }
 .project-card:hover .project-arrow {
   background: var(--orange);
-  color: #fff;
+  color: var(--ink);
 }
 .sample-badge {
   position: absolute;
@@ -556,7 +556,7 @@ main:focus {
 }
 .empty-card {
   padding: 50px;
-  background: #dedad2;
+  background: var(--line);
 }
 .about-page {
   display: grid;
@@ -591,7 +591,15 @@ main:focus {
   border: 1px solid var(--line);
   padding: 5px 17px;
   border-radius: 30px;
+  background: var(--orange);
+  color: var(--ink);
   font-size: 12px;
+}
+.about-skills span:nth-child(2) {
+  background: var(--blue);
+}
+.about-skills span:nth-child(3) {
+  background: var(--orange);
 }
 .about-visual {
   position: relative;
@@ -634,6 +642,7 @@ main:focus {
 }
 .solid-link:hover {
   background: var(--blue);
+  color: var(--ink);
 }
 .contact-page {
   display: grid;
@@ -876,7 +885,7 @@ form > .solid-link {
   align-items: center;
 }
 .admin-notice {
-  background: #e4ddd0;
+  background: var(--line);
   border-right: 3px solid var(--orange);
   padding: 20px;
   margin: 30px 0;
@@ -902,6 +911,28 @@ form > .solid-link {
 .admin-panel select,
 .admin-panel textarea {
   font-size: 13px;
+}
+.copy-editor {
+  margin: 10px 0;
+  border-block: 1px solid var(--line);
+}
+.copy-editor > summary {
+  padding: 16px 0;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.copy-editor fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 15px 0 25px;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+.copy-editor legend {
+  padding: 0 0 12px;
+  font-size: 16px;
+  font-weight: 700;
 }
 .panel-title {
   display: flex;
@@ -1336,8 +1367,8 @@ form > .solid-link {
 
 /* Second cut: louder color, kinetic typography, and controlled movement. */
 :root {
-  --orange: #fa5428;
-  --blue: #3441ed;
+  --orange: #ae76a6;
+  --blue: #a3c3d9;
 }
 .visually-hidden {
   position: absolute;
@@ -1450,6 +1481,10 @@ form > .solid-link {
 }
 .disciplines a:nth-child(3):hover {
   background: var(--ink);
+  color: var(--paper);
+}
+.disciplines a:nth-child(3):hover .discipline-arrow {
+  color: var(--paper);
 }
 .discipline-arrow {
   transition: transform 0.3s;
@@ -1459,11 +1494,11 @@ form > .solid-link {
 }
 .intro-band {
   background: var(--blue);
-  color: var(--paper);
+  color: var(--ink);
   border-color: var(--blue);
 }
 .intro-band .text-link {
-  border-color: var(--paper);
+  border-color: var(--ink);
 }
 .intro-band p {
   font-weight: 800;
@@ -1478,7 +1513,7 @@ form > .solid-link {
   -webkit-text-stroke: 1px var(--ink);
 }
 .home-contact i {
-  color: var(--paper);
+  color: var(--ink);
   display: inline-block;
   transition: transform 0.4s;
 }
@@ -1541,7 +1576,7 @@ form > .solid-link {
 }
 .work-tabs a:not(.active):hover {
   background: var(--blue);
-  color: var(--paper);
+  color: var(--ink);
 }
 .site-header .logo-star {
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -1752,7 +1787,7 @@ form > .solid-link {
 
 /* Audit hardening: content may grow; readability and focus come first. */
 :root {
-  --orange-text: #b63817;
+  --orange-text: #4f000b;
 }
 html {
   scrollbar-gutter: stable;
@@ -1765,7 +1800,7 @@ body.modal-open {
 }
 .site-status {
   padding: 12px 5.5%;
-  background: #e4ddd0;
+  background: var(--line);
   border-bottom: 1px solid var(--line);
   font-size: 12px;
   line-height: 1.7;

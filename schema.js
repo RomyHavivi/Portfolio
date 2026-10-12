@@ -41,6 +41,17 @@ export function validateContent(input, { allowSeed = false } = {}) {
       max,
       ["name", "intro", "about", "contactIntro"].includes(key),
     );
+  if (
+    input.copy !== undefined &&
+    (!input.copy || typeof input.copy !== "object" || Array.isArray(input.copy))
+  )
+    throw new Error("הטקסטים המותאמים באתר אינם תקינים.");
+  output.copy = Object.fromEntries(
+    Object.entries(initialContent.copy).map(([key, fallback]) => [
+      key,
+      input.copy?.[key] === undefined ? fallback : text(input.copy[key], key, 2000),
+    ]),
+  );
   for (const key of ["heroPoster", "aboutImage"])
     if (output[key] && !mediaURL(output[key])) throw new Error("קישור תמונה שמור אינו תקין.");
   if (output.heroVideo && !isHeroVideo(output.heroVideo))
