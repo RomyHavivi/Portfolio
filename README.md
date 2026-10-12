@@ -67,9 +67,9 @@ The footer's **ניהול האתר** link opens the studio. Its URL is not a sec
 - Edit name, introduction, About text, portrait, hero poster and contact introduction.
 - Add / edit / delete / reorder projects.
 - Choose **בימוי**, **עריכה**, or **צילום**; photography projects have **קוספליי** or **אופנה** categories.
-- Use an image HTTPS URL or upload JPG, PNG, WEBP, AVIF or GIF. Supported video uploads are MP4 / WEBM. Maximum file size: 50 MB. Storage limits and pricing depend on your Supabase plan.
+- Use an image HTTPS URL or upload JPG, PNG, WEBP, AVIF or GIF. Still images other than GIF are converted in the browser to WebP at 82% quality and resized to a maximum 2000 px on the longest side before upload. GIFs are kept unchanged to preserve animation. Supported video uploads are MP4 / WEBM. Maximum source file size: 50 MB. Storage limits and pricing depend on your Supabase plan.
 - Click Save after uploading a file; uploading alone does not attach it to your content.
-- For YouTube or Vimeo projects, paste the regular video link. For other platforms, use the actual HTTPS **embed URL**, not an iframe HTML snippet. The platform must permit framing. DRM, private videos, platform restrictions and missing permissions cannot be overridden.
+- For YouTube or Vimeo projects, paste the regular video link. For other platforms, use the actual HTTPS **embed URL**, not an iframe HTML snippet. Dailymotion embeds provided through Iframely need their iframe URL; the site leaves Iframely's player unsandboxed so its nested player can work. The platform must permit framing. DRM, private videos, platform restrictions and missing permissions cannot be overridden.
 - For the hero, use a direct HTTPS `.mp4` / `.webm` link. Cloudinary videos with a standard versioned delivery URL automatically receive `q_auto/f_auto` optimizations; for other sources, upload a web-sized, compressed video (ideally 1080p or smaller). It plays muted, loops, and has a pause control. A poster remains visible when autoplay or loading is blocked. Reduced-motion preferences turn off autoplay.
 - Photography opens an image viewer with next/previous controls and keyboard arrows; Escape closes it.
 - Login sessions are stored for the current browser tab and refreshed while active. Sign out when using a shared device.

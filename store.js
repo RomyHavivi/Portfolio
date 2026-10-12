@@ -181,6 +181,35 @@ export async function saveContent(content) {
     throw new Error("לא התקבלה גרסת תוכן מעודכנת. יש לבדוק את התקנת מסד הנתונים.");
   revision = rows[0].revision;
 }
+async function convertImageToWebP(file) {
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(file);
+  } catch {
+    throw new Error("לא ניתן לקרוא את קובץ התמונה הזה בדפדפן.");
+  }
+  try {
+    if (bitmap.width * bitmap.height > 100_000_000)
+      throw new Error("רזולוציית התמונה גדולה מדי לעיבוד בדפדפן.");
+    const scale = Math.min(1, 2000 / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("לא ניתן לעבד את התמונה בדפדפן.");
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.82));
+    if (!blob || blob.type !== "image/webp")
+      throw new Error("הדפדפן לא הצליח ליצור תמונת WebP. נסו דפדפן מעודכן.");
+    const name = file.name.replace(/\.[^.]+$/, "") || "image";
+    return new File([blob], `${name}.webp`, {
+      type: "image/webp",
+      lastModified: file.lastModified,
+    });
+  } finally {
+    bitmap.close();
+  }
+}
 export async function uploadMedia(file) {
   if (!config || !signedIn())
     throw new Error("העלאה זמינה לאחר חיבור אחסון והתחברות. בהדגמה ניתן להשתמש בקישור HTTPS.");
@@ -198,11 +227,15 @@ export async function uploadMedia(file) {
   if (!file.size) throw new Error("לא ניתן להעלות קובץ ריק.");
   if (file.size > 50 * 1024 * 1024)
     throw new Error("גודל הקובץ המרבי הוא 50MB. לסרטים גדולים מומלץ להשתמש ב-YouTube או Vimeo.");
-  const path = `${crypto.randomUUID()}.${ext}`;
+  const media =
+    file.type.startsWith("image/") && file.type !== "image/gif"
+      ? await convertImageToWebP(file)
+      : file;
+  const path = `${crypto.randomUUID()}.${media.type === "image/webp" ? "webp" : ext}`;
   await request(`/storage/v1/object/portfolio-media/${path}`, {
     method: "POST",
-    headers: { "Content-Type": file.type, "x-upsert": "false" },
-    body: file,
+    headers: { "Content-Type": media.type, "x-upsert": "false" },
+    body: media,
   });
   return `${config.url}/storage/v1/object/public/portfolio-media/${path}`;
 }
