@@ -2042,7 +2042,6 @@ body::before {
   animation: ambient-drift 60s ease-in-out infinite alternate;
   will-change: transform;
 }
-body > .site-header,
 body > main,
 body > .site-footer,
 body > .site-status {
@@ -2903,7 +2902,6 @@ body::after {
   background-size: 137px 137px;
   mask-image: linear-gradient(180deg, black, transparent 85%);
 }
-body > .site-header,
 body > main,
 body > .site-footer,
 body > .site-status {
