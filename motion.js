@@ -89,11 +89,7 @@ export function enhanceMotion(root, nextCopy = copy) {
   observer?.disconnect();
   resetTilt();
   const hero = root.querySelector(".hero");
-  if (hero && !hero.querySelector(".hero-sticker")) {
-    hero.insertAdjacentHTML(
-      "beforeend",
-      `<div class="hero-sticker" aria-hidden="true"><span dir="ltr">${e(copy.motionStickerCaption)}</span><strong>${copy.motionStickerLines.split("\n").map(e).join("<br>")}</strong><i>↗</i></div>`,
-    );
+  if (hero && !root.querySelector(".creative-ticker")) {
     root
       .querySelector(".disciplines")
       .insertAdjacentHTML(

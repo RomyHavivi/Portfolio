@@ -95,7 +95,7 @@ function disciplineLinks() {
 function renderHome() {
   const hero = optimizeCloudinaryVideo(content.heroVideo);
   const visibleLabels = siteLabels();
-  main.innerHTML = `<section class="hero" aria-label="${e(copy().homeHeroLabel)}"><img class="hero-poster" src="${safeImage(content.heroPoster)}" alt=""><video class="hero-video" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "" : "autoplay"} loop muted playsinline preload="auto" poster="${safeImage(content.heroPoster)}" aria-hidden="true">${hero ? `<source src="${e(hero)}">` : ""}</video><div class="hero-shade"></div><div class="hero-text"><h1>${headingLines("homeHeadline", true)}</h1><p>${e(content.intro)}</p><a class="hero-cta" href="#projects">${e(copy().homeHeroCta)} <span aria-hidden="true">↙</span></a></div><div class="hero-bottom"><button id="hero-toggle" aria-label="${e(copy().videoPause)}">Ⅱ</button></div></section>${disciplineLinks()}<section class="home-work section-pad"><div class="section-heading"><div><h2>${homeHeadingMarkup()}</h2></div><a class="text-link" href="#projects">${e(copy().homeAllWorks)} ↖</a></div><div class="selected-grid">${Object.keys(
+  main.innerHTML = `<section class="hero" aria-label="${e(copy().homeHeroLabel)}"><img class="hero-poster" src="${safeImage(content.heroPoster)}" alt=""><video class="hero-video" ${matchMedia("(prefers-reduced-motion: reduce)").matches ? "" : "autoplay"} loop muted playsinline preload="auto" poster="${safeImage(content.heroPoster)}" aria-hidden="true">${hero ? `<source src="${e(hero)}">` : ""}</video><div class="hero-text"><h1>${headingLines("homeHeadline", true)}</h1><p>${e(content.intro)}</p><a class="hero-cta" href="#projects">${e(copy().homeHeroCta)} <span aria-hidden="true">↙</span></a></div><div class="hero-bottom"><button id="hero-toggle" aria-label="${e(copy().videoPause)}">Ⅱ</button></div></section>${disciplineLinks()}<section class="home-work section-pad"><div class="section-heading"><div><h2>${homeHeadingMarkup()}</h2></div><a class="text-link" href="#projects">${e(copy().homeAllWorks)} ↖</a></div><div class="selected-grid">${Object.keys(
     labels,
   )
     .map((key) => {
@@ -541,6 +541,9 @@ function updateIdentity() {
   nav.querySelector('a[href="#about"]').textContent = copy().navAbout;
   nav.querySelector('a[href="#contact"]').innerHTML =
     `${e(copy().navContact)} <span aria-hidden="true">↖</span>`;
+  const instagramLink = nav.querySelector(".nav-instagram");
+  instagramLink.href = content.instagramUrl || "https://www.instagram.com/";
+  instagramLink.hidden = !content.instagramUrl;
   document.querySelector(".site-footer > span").textContent = copy().footerDisciplines;
   document.querySelector('.site-footer a[href="#admin"]').textContent = copy().footerAdmin;
   document.querySelector(".viewer-close").setAttribute("aria-label", copy().viewerClose);

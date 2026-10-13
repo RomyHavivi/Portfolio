@@ -148,8 +148,7 @@ main:focus {
   overflow: hidden;
 }
 .hero-poster,
-.hero-video,
-.hero-shade {
+.hero-video {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -158,14 +157,6 @@ main:focus {
 }
 .hero-video {
   object-position: center 42%;
-}
-.hero-shade {
-  background: linear-gradient(
-    270deg,
-    rgba(16, 20, 21, 0.82),
-    rgba(16, 20, 21, 0.22) 67%,
-    rgba(16, 20, 21, 0.34)
-  );
 }
 .hero-text {
   position: relative;
@@ -1132,9 +1123,6 @@ form > .solid-link {
     font-size: clamp(85px, 21vw, 120px);
     letter-spacing: -5px;
   }
-  .hero-shade {
-    background: linear-gradient(270deg, rgba(16, 20, 21, 0.78), rgba(16, 20, 21, 0.3));
-  }
   .hero-text p {
     font-size: 13px;
     max-width: 270px;
@@ -1380,14 +1368,6 @@ form > .solid-link {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
-}
-.hero-shade {
-  background: linear-gradient(
-    270deg,
-    rgba(16, 20, 21, 0.75),
-    rgba(16, 20, 21, 0.13) 67%,
-    rgba(16, 20, 21, 0.25)
-  );
 }
 .hero-line {
   display: block;
@@ -1815,14 +1795,6 @@ body.modal-open {
   min-height: max(690px, calc(100svh - 92px));
   padding-bottom: 115px;
 }
-.hero-shade {
-  background: linear-gradient(
-    270deg,
-    rgba(16, 20, 21, 0.83),
-    rgba(16, 20, 21, 0.76) 58%,
-    rgba(16, 20, 21, 0.17)
-  );
-}
 .hero-text > p,
 .about-body,
 .contact-copy > p,
@@ -1954,9 +1926,6 @@ body.modal-open {
   .hero,
   .hero-text {
     min-height: max(650px, calc(100svh - 76px));
-  }
-  .hero-shade {
-    background: rgba(16, 20, 21, 0.78);
   }
   .hero-text {
     padding-bottom: 115px;
@@ -2144,6 +2113,54 @@ body::before {
 .site-header nav a:hover {
   color: var(--orange-text);
 }
+.site-header nav .nav-instagram {
+  display: grid;
+  width: 39px;
+  height: 39px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(232, 210, 255, 0.3);
+  border-radius: 50%;
+  background: rgba(180, 126, 230, 0.12);
+  color: #f1ceff;
+  box-shadow:
+    0 0 18px rgba(190, 136, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition:
+    color 0.25s,
+    background 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s,
+    transform 0.25s;
+}
+.site-header nav .nav-instagram::after {
+  content: none;
+}
+.nav-instagram svg {
+  width: 19px;
+  height: 19px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+.nav-instagram svg .instagram-flash {
+  fill: currentColor;
+  stroke: none;
+}
+.site-header nav .nav-instagram:hover {
+  transform: translateY(-2px);
+  border-color: rgba(242, 201, 255, 0.78);
+  background: rgba(183, 124, 226, 0.26);
+  color: #fff3ff;
+  box-shadow:
+    0 0 25px rgba(208, 147, 255, 0.35),
+    inset 0 0 15px rgba(227, 190, 255, 0.13);
+}
+.site-header nav .nav-instagram[hidden] {
+  display: none;
+}
 .hero {
   margin: 20px 3.2% 0;
   min-height: max(670px, calc(100svh - 112px));
@@ -2161,35 +2178,6 @@ body::before {
 }
 .hero-video {
   opacity: 0.72;
-}
-.hero-shade {
-  background:
-    linear-gradient(270deg, rgba(251, 246, 241, 0.9), rgba(251, 246, 241, 0.7) 39%, rgba(56, 43, 59, 0.05) 82%),
-    linear-gradient(0deg, rgba(78, 56, 77, 0.13), transparent 52%);
-}
-.hero-shade::before {
-  content: "";
-  position: absolute;
-  width: min(42vw, 560px);
-  aspect-ratio: 1;
-  left: 8%;
-  top: 8%;
-  border: 1px solid rgba(255, 250, 245, 0.62);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 24px rgba(255, 250, 245, 0.08),
-    0 0 90px 20px rgba(255, 239, 221, 0.25);
-}
-.hero-shade::after {
-  content: "✧";
-  position: absolute;
-  left: 19%;
-  top: 20%;
-  color: rgba(255, 250, 245, 0.88);
-  font-family: "Noto Serif Hebrew", serif;
-  font-size: clamp(54px, 8vw, 120px);
-  text-shadow: 0 0 42px rgba(255, 241, 227, 0.9);
-  animation: dream-glow 6s ease-in-out infinite alternate;
 }
 .hero-text {
   min-height: max(670px, calc(100svh - 112px));
@@ -2754,21 +2742,6 @@ textarea::placeholder {
   .hero-video {
     opacity: 0.64;
   }
-  .hero-shade {
-    background:
-      linear-gradient(270deg, rgba(251, 246, 241, 0.91), rgba(251, 246, 241, 0.78) 58%, rgba(56, 43, 59, 0.1)),
-      linear-gradient(0deg, rgba(78, 56, 77, 0.1), transparent 52%);
-  }
-  .hero-shade::before {
-    width: 75vw;
-    left: 5%;
-    top: 9%;
-  }
-  .hero-shade::after {
-    left: 14%;
-    top: 17%;
-    font-size: 56px;
-  }
   .hero-text {
     min-height: max(650px, calc(100svh - 86px));
     padding: 100px 8% 125px;
@@ -2880,7 +2853,6 @@ textarea::placeholder {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-shade::after,
   .hero-sticker {
     animation: none !important;
   }
@@ -3010,35 +2982,6 @@ main {
 .hero-video {
   opacity: 0.7;
   mix-blend-mode: screen;
-}
-.hero-shade {
-  overflow: hidden;
-  background:
-    radial-gradient(ellipse at 17% 41%, rgba(189, 137, 255, 0.36), transparent 36%),
-    radial-gradient(ellipse at 66% 20%, rgba(87, 179, 231, 0.27), transparent 41%),
-    linear-gradient(270deg, rgba(15, 13, 28, 0.95), rgba(24, 20, 41, 0.83) 44%, rgba(22, 18, 37, 0.28) 100%),
-    linear-gradient(0deg, rgba(13, 12, 28, 0.55), transparent 55%);
-}
-.hero-shade::before {
-  width: min(47vw, 650px);
-  left: 5%;
-  top: 14%;
-  border: 1px solid rgba(228, 192, 255, 0.56);
-  box-shadow:
-    0 0 0 22px rgba(203, 166, 255, 0.055),
-    0 0 0 65px rgba(203, 166, 255, 0.035),
-    inset 0 0 75px rgba(174, 143, 244, 0.1),
-    0 0 65px rgba(208, 152, 255, 0.26);
-  filter: drop-shadow(0 0 24px rgba(206, 156, 255, 0.4));
-}
-.hero-shade::after {
-  left: 21%;
-  top: 20%;
-  color: #f6d8ff;
-  text-shadow:
-    0 0 12px #fff,
-    0 0 34px #de9cff,
-    0 0 72px #aa8dff;
 }
 .hero-text {
   width: min(78%, 980px);
@@ -3293,7 +3236,9 @@ main {
 }
 .project-caption h3 {
   color: #fff1ff;
-  text-shadow: 0 0 18px rgba(213, 168, 255, 0.23);
+  text-shadow:
+    0 0 20px rgba(232, 198, 255, 0.28),
+    0 0 48px rgba(194, 140, 249, 0.2);
 }
 .project-caption p,
 .project-caption > span {
@@ -3767,22 +3712,6 @@ textarea::placeholder {
   .hero-video {
     object-position: 58% center;
   }
-  .hero-shade {
-    background:
-      radial-gradient(ellipse at 16% 42%, rgba(177, 126, 239, 0.31), transparent 48%),
-      linear-gradient(270deg, rgba(15, 13, 28, 0.94), rgba(23, 19, 40, 0.82) 58%, rgba(21, 17, 35, 0.48));
-  }
-  .hero-shade::before {
-    width: 76vw;
-    left: 4%;
-    top: 11%;
-    box-shadow: 0 0 0 16px rgba(203, 166, 255, 0.045), 0 0 0 42px rgba(203, 166, 255, 0.03), 0 0 55px rgba(208, 152, 255, 0.23);
-  }
-  .hero-shade::after {
-    left: 12%;
-    top: 17%;
-    font-size: 53px;
-  }
   .hero,
   .hero-text {
     min-height: max(660px, calc(100svh - 92px));
@@ -3943,4 +3872,82 @@ textarea::placeholder {
   .project-card:hover img {
     transform: none !important;
   }
+}
+
+/* Final polish: keep the night-glow clean and the media fully opaque. */
+.hero-video {
+  opacity: 1;
+  mix-blend-mode: normal;
+  filter: saturate(0.88) brightness(0.74) hue-rotate(8deg);
+}
+.hero h1 .hero-line > span,
+.hero h1 .hero-line > em {
+  text-shadow: none;
+  filter:
+    drop-shadow(0 0 10px rgba(246, 219, 255, 0.48))
+    drop-shadow(0 0 26px rgba(193, 137, 255, 0.36));
+}
+.hero-line:last-child em {
+  color: #f0b9eb;
+  filter:
+    drop-shadow(0 0 12px rgba(255, 210, 250, 0.62))
+    drop-shadow(0 0 34px rgba(230, 127, 255, 0.48));
+}
+.hero-line {
+  overflow: visible;
+}
+.hero h1 {
+  text-shadow: none;
+}
+.hero h1 em:after {
+  box-shadow: none;
+}
+.hero-sticker {
+  display: none !important;
+}
+.project-image {
+  border: 0;
+  box-shadow:
+    0 22px 54px rgba(3, 3, 14, 0.32),
+    0 0 58px 8px rgba(181, 126, 242, 0.2);
+}
+.project-image::after {
+  content: none;
+}
+.about-visual {
+  height: min(70vh, 650px);
+  min-height: 420px;
+  padding: 0;
+  overflow: hidden;
+}
+.about-visual > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+  border-radius: inherit;
+}
+.about-visual .photo-index {
+  position: absolute;
+  right: 18px;
+  bottom: 15px;
+  z-index: 1;
+  padding: 9px 12px;
+  border: 1px solid rgba(238, 217, 255, 0.32);
+  border-radius: 30px;
+  background: rgba(25, 20, 40, 0.7);
+  box-shadow: 0 0 20px rgba(190, 136, 255, 0.22);
+  backdrop-filter: blur(12px);
+}
+@media (max-width: 650px) {
+  .about-visual {
+    height: 420px;
+    min-height: 360px;
+  }
+}
+
+.intro-band::before,
+.home-contact::after {
+  content: none;
+  display: none;
 }

@@ -7,6 +7,7 @@ export const initialContent = {
   heroVideo: "https://media.w3.org/2010/05/sintel/trailer_hd.mp4",
   heroPoster:
     "https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=2000&q=85",
+  instagramUrl: "",
   aboutImage:
     "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1000&q=85",
   contactIntro: "סרט, פריים, או רעיון שעוד לא קיבל צורה. אשמח לשמוע עליו.",

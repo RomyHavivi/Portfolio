@@ -29,6 +29,21 @@ export function isHeroVideo(value) {
     return false;
   }
 }
+export function isInstagramURL(value) {
+  if (!value) return true;
+  try {
+    const url = new URL(value);
+    return (
+      url.protocol === "https:" &&
+      ["instagram.com", "www.instagram.com"].includes(url.hostname) &&
+      /^\/[A-Za-z0-9._]+\/?$/.test(url.pathname) &&
+      !url.username &&
+      !url.password
+    );
+  } catch {
+    return false;
+  }
+}
 export function validateContent(input, { allowSeed = false } = {}) {
   if (!input || typeof input !== "object" || Array.isArray(input))
     throw new Error("התוכן השמור צריך להיות אובייקט תקין.");
@@ -41,6 +56,10 @@ export function validateContent(input, { allowSeed = false } = {}) {
       max,
       ["name", "intro", "about", "contactIntro"].includes(key),
     );
+  output.instagramUrl =
+    input.instagramUrl === undefined ? initialContent.instagramUrl : text(input.instagramUrl, "instagramUrl", 500);
+  if (!isInstagramURL(output.instagramUrl))
+    throw new Error("קישור אינסטגרם שמור אינו תקין. יש להזין כתובת HTTPS לפרופיל Instagram.");
   if (
     input.copy !== undefined &&
     (!input.copy || typeof input.copy !== "object" || Array.isArray(input.copy))
